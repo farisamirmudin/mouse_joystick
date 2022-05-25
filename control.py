@@ -1,9 +1,12 @@
 import pygame
 import time
 import mouse
+from pynput.keyboard import Controller, Key
+import os
 
 def main():
     x = y = scroll = 0.0
+    keyboard = Controller()
     done = False
     pygame.init()
     joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
@@ -24,19 +27,27 @@ def main():
                     if event.button == 1:
                         mouse.click('right')
                     if event.button == 2:
-                        pass
-                    if event.button == 3:
-                        pass
+                        keyboard.press(Key.alt)
+                    if event.button == 11:
+                        keyboard.press(Key.tab)
+                    if event.button == 5:
+                        done = True
                     if event.button == 9:
-                        scale_move-=5
-                        print("mouse pointer speed=", scale_move)
+                        multp_move-=5
+                        print("mouse pointer speed=", multp_move)
                     if event.button == 10:
-                        scale_move+=5
-                        print("mouse pointer speed=", scale_move)
+                        multp_move+=5
+                        print("mouse pointer speed=", multp_move)
+                    if event.button == 15:
+                        pass
                 elif event.type == pygame.JOYBUTTONUP:
                     if event.button == 0:
                         print('x is released')
                         mouse.release('left')
+                    if event.button == 2:
+                        keyboard.release(Key.alt)
+                    if event.button == 11:
+                        keyboard.release(Key.tab)
                         
                 elif event.type == pygame.JOYAXISMOTION:
                     x = clip(joystick.get_axis(0), multp_move)
