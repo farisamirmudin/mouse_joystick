@@ -1,6 +1,5 @@
 import pygame
 import time
-from threading import Thread
 import mouse
 
 def main():
