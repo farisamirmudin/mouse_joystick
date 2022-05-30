@@ -1,12 +1,8 @@
-import pygame
-import time
-import mouse
-from pynput.keyboard import Controller, Key
-import os
+import pygame, pyautogui as ag, mouse
+import win32api, win32con
 
 def main():
-    x = y = scroll = 0.0
-    keyboard = Controller()
+    x = y = scroll = 0
     done = False
     pygame.init()
     joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
@@ -15,6 +11,8 @@ def main():
     multp_scroll = 5
     clip = lambda x ,k: x*k if abs(x)>0.1 else 0.0
     scaling = lambda x, min, max: (x-min)/(max-min)
+    left_right = False
+    up_down = False
     try:
         while not done:
             for event in pygame.event.get(): # User did something.
@@ -22,14 +20,15 @@ def main():
                     done = True # Flag that we are done so we exit this loop.
                 elif event.type == pygame.JOYBUTTONDOWN:
                     if event.button == 0:
-                        print('x is pressed')
                         mouse.press('left')
                     if event.button == 1:
-                        mouse.click('right')
+                        mouse.press('right')
                     if event.button == 2:
-                        keyboard.press(Key.alt)
-                    if event.button == 11:
-                        keyboard.press(Key.tab)
+                        curr = win32api.GetCursorPos()
+                        x = 50
+                        y = 50
+                        win32api.mouse_event(win32con.MOUSEEVENTF_MOVE | win32con.MOUSEEVENTF_ABSOLUTE, x, y, 0, 0)
+                        print('moved')
                     if event.button == 5:
                         done = True
                     if event.button == 9:
@@ -38,36 +37,32 @@ def main():
                     if event.button == 10:
                         multp_move+=5
                         print("mouse pointer speed=", multp_move)
-                    if event.button == 15:
-                        pass
+                    if event.button == 11:
+                        ag.keyDown('w')
+                    if event.button == 12:
+                        ag.keyDown('s')
+                    if event.button == 13:
+                        ag.keyDown('a')
+                    if event.button == 14:
+                        ag.keyDown('d')
                 elif event.type == pygame.JOYBUTTONUP:
                     if event.button == 0:
-                        print('x is released')
                         mouse.release('left')
+                    if event.button == 1:
+                        mouse.release('right')
                     if event.button == 2:
-                        keyboard.release(Key.alt)
+                        pass
                     if event.button == 11:
-                        keyboard.release(Key.tab)
+                        ag.keyUp('w')
+                    if event.button == 12:
+                        ag.keyUp('s')
+                    if event.button == 13:
+                        ag.keyUp('a')
+                    if event.button == 14:
+                        ag.keyUp('d')
                         
                 elif event.type == pygame.JOYAXISMOTION:
-                    x = clip(joystick.get_axis(0), multp_move)
-                    y = clip(joystick.get_axis(1), multp_move)
-                    scroll = clip(joystick.get_axis(3), multp_scroll)
-                    
-                    if event.axis == 4:
-                        if event.value == 1.0:
-                            print('lt full pressed')
-                    if event.axis == 5:
-                        if event.value == 1.0:
-                            print('rt full pressed')
-                    # lt = scaling(joystick.get_axis(4), -1, 1)
-                    # rt = scaling(joystick.get_axis(5), -1, 1)
-                    # if lt > 0.0:
-                    #     print(joystick.get_axis(4))
-                    # if rt > 0.0:
-                    #     print(joystick.get_axis(5))
-            mouse.move(x, y, absolute=False, duration=0.1)
-            mouse.wheel(scroll)
+                    pass
     except KeyboardInterrupt:
         pass
 
