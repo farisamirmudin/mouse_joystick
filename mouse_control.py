@@ -24,7 +24,9 @@ def main():
     scrollFlag = False
     
     multp_move = 70
+    multp_scroll = 3
     multp = lambda x, k: x*k if abs(x)>0.1 else 0.0
+
 
     while not done:
         for event in pygame.event.get(): # Button pressed or axis moved
@@ -35,7 +37,7 @@ def main():
                 if button == 1:
                     rightClick()
                 if button == 2:
-                    keyDown('alt')
+                    pass
                 if button == 3:
                     mouseDown()
                 if button == 4:
@@ -60,27 +62,27 @@ def main():
                     keyboard.release(Key.media_volume_up)
                     
             elif event.type == pygame.JOYAXISMOTION: # Axis is moved
-                A0 = multp(joystick.get_axis(0), multp_move) # Horizontal movement of left axis
-                A1 = multp(joystick.get_axis(1), multp_move) # Vertical movement of left axis
-                A4 = joystick.get_axis(4) # value that determines the state of scrollFlag
+                A0 = multp(joystick.get_axis(0), multp_move) # left right left stick
+                A1 = multp(joystick.get_axis(1), multp_move) # up down left stick
+                A4 = joystick.get_axis(4) # up down right stick
                 if abs(A4) > 0.6:
                     scrollFlag = True
                 else:
                     scrollFlag = False
             elif event.type == pygame.JOYHATMOTION: # D-Pad
                 HAT = joystick.get_hat(0)
-                if HAT == (0, 1): # Combine with button 2 (from above) results in Alt+tab
-                    press('tab')
-                if HAT == (-1, 0):
+                if HAT == (0, 1):
                     hotkey('ctrl', 'tab') # Changing tab in chrome
+                if HAT == (-1, 0):
+                    press('left')
                 if HAT == (1, 0):
                     press('right')
-                if HAT == (1, 0):
+                if HAT == (0,-1):
                     press('down')
                 
         mouse.move(A0, A1, absolute=False, duration=0.1) # move the mouse
         if scrollFlag:
-            click = 3 if A4 > 0 else -3
+            click = multp_scroll if A4 > 0 else -multp_scroll
             scroll(click) # scroll (direction inverted)
 
 if __name__ == "__main__":
