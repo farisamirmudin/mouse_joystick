@@ -60,16 +60,16 @@ def main():
                     keyboard.release(Key.media_volume_up)
                     
             elif event.type == pygame.JOYAXISMOTION: # Axis is moved
-                A0 = multp(joystick.get_axis(0), multp_move) # Horizontal movement of mouse
-                A1 = multp(joystick.get_axis(1), multp_move) # Vertical movement of mouse
-                A4 = joystick.get_axis(4) # value to set scrollFlag
+                A0 = multp(joystick.get_axis(0), multp_move) # Horizontal movement of left axis
+                A1 = multp(joystick.get_axis(1), multp_move) # Vertical movement of left axis
+                A4 = joystick.get_axis(4) # value that determines the state of scrollFlag
                 if abs(A4) > 0.6:
                     scrollFlag = True
                 else:
                     scrollFlag = False
             elif event.type == pygame.JOYHATMOTION: # D-Pad
                 HAT = joystick.get_hat(0)
-                if HAT == (0,1): # Combine with button 2 (from above) results in Alt+tab
+                if HAT == (0, 1): # Combine with button 2 (from above) results in Alt+tab
                     press('tab')
                 if HAT == (-1, 0):
                     hotkey('ctrl', 'tab') # Changing tab in chrome
