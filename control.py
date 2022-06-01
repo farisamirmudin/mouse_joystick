@@ -1,70 +1,85 @@
-import pygame, pyautogui as ag, mouse
-import win32api, win32con
+import pygame
+from pyautogui import *
+import mouse
+from pynput.keyboard import Key,Controller
 
 def main():
-    x = y = scroll = 0
-    done = False
+    # Initializing keyboard and joystick
+    keyboard = Controller()
     pygame.init()
     joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
     joystick = joysticks[0]
-    multp_move = 65
-    multp_scroll = 5
-    clip = lambda x ,k: x*k if abs(x)>0.1 else 0.0
-    scaling = lambda x, min, max: (x-min)/(max-min)
-    left_right = False
-    up_down = False
-    try:
-        while not done:
-            for event in pygame.event.get(): # User did something.
-                if event.type == pygame.QUIT: # If user clicked close.
-                    done = True # Flag that we are done so we exit this loop.
-                elif event.type == pygame.JOYBUTTONDOWN:
-                    if event.button == 0:
-                        mouse.press('left')
-                    if event.button == 1:
-                        mouse.press('right')
-                    if event.button == 2:
-                        curr = win32api.GetCursorPos()
-                        x = 50
-                        y = 50
-                        win32api.mouse_event(win32con.MOUSEEVENTF_MOVE | win32con.MOUSEEVENTF_ABSOLUTE, x, y, 0, 0)
-                        print('moved')
-                    if event.button == 5:
-                        done = True
-                    if event.button == 9:
-                        multp_move-=5
-                        print("mouse pointer speed=", multp_move)
-                    if event.button == 10:
-                        multp_move+=5
-                        print("mouse pointer speed=", multp_move)
-                    if event.button == 11:
-                        ag.keyDown('w')
-                    if event.button == 12:
-                        ag.keyDown('s')
-                    if event.button == 13:
-                        ag.keyDown('a')
-                    if event.button == 14:
-                        ag.keyDown('d')
-                elif event.type == pygame.JOYBUTTONUP:
-                    if event.button == 0:
-                        mouse.release('left')
-                    if event.button == 1:
-                        mouse.release('right')
-                    if event.button == 2:
-                        pass
-                    if event.button == 11:
-                        ag.keyUp('w')
-                    if event.button == 12:
-                        ag.keyUp('s')
-                    if event.button == 13:
-                        ag.keyUp('a')
-                    if event.button == 14:
-                        ag.keyUp('d')
-                        
-                elif event.type == pygame.JOYAXISMOTION:
+
+    '''
+    Initializing variables 
+    A0, A1, A3 : axis value
+    done : used for while loop
+    scrollFlag : to scroll or not 
+    multp_move : multiply axis value to a reasonable value
+    multp : function that takes two parameters, axis value and multiplier
+    '''
+    
+    A0=A1=A3=0.0
+    done = False
+    volumedown = volumeup = False
+    
+    multp_move = 70
+    multp_scroll = 3
+    multp = lambda x, k: x*k if abs(x)>0.1 else 0.0
+
+    while not done:
+        for event in pygame.event.get(): # Button pressed or axis moved
+            if event.type == pygame.JOYBUTTONDOWN: # Button is pressed
+                button = event.button
+                if button == 0:
+                    leftClick()
+                if button == 1:
+                    rightClick()
+                if button == 2: # Dragging purpose
+                    mouseDown()
+                if button == 3:
                     pass
-    except KeyboardInterrupt:
-        pass
+                if button == 5: # Stop program
+                    done = True
+                if button == 9:
+                    multp_move -= 5
+                if button == 10:
+                    multp_move += 5
+                if button == 11:
+                    hotkey('ctrl', 'tab') # Changing tab in chrome
+                if button == 12:
+                    pass
+                if button == 13:
+                    press('left')
+                if button == 14:
+                    press('right')
+
+            elif event.type == pygame.JOYBUTTONUP: # Button is released
+                event.button = button
+                if button == 2:
+                    mouseUp()
+                        
+            elif event.type == pygame.JOYAXISMOTION:
+                A0 = multp(joystick.get_axis(0), multp_move)
+                A1 = multp(joystick.get_axis(1), multp_move)
+                A3 = multp(joystick.get_axis(3), multp_scroll)
+                A4 = joystick.get_axis(4)
+                A5 = joystick.get_axis(5)
+
+                if A4 > 0.9:
+                    volumedown = True
+                if A5 > 0.9:
+                    volumeup = True
+        mouse.move(A0, A1, absolute=False, duration=0.1)
+        mouse.wheel(A3)
+        if volumedown:
+            keyboard.press(Key.media_volume_down) # Control system volume
+            keyboard.release(Key.media_volume_down)
+            volumedown = False
+        if volumeup:
+            keyboard.press(Key.media_volume_up)
+            keyboard.release(Key.media_volume_up)
+            volumeup = False
 
 if __name__ == "__main__":
     main()
