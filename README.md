@@ -1,6 +1,6 @@
 # mouse-joystick
 
-This program is to control the mouse pointer using a joystick. Targeted audience are people who wants to do stuff on their computer while lying down and do not want to bring their mouse on the bed. Instead they can use their PS4 controller to control the mouse pointer. 
+This program is to control mouse pointer using a joystick. Targeted audience are people who wants to do stuff e.g. watching movies on their computer while lying down and do not want to bring their mouse on the bed. Instead they can use their PS4 controller. 
 
 ## Configurations
 Default Configuration (PS4):
