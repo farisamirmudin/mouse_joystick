@@ -42,3 +42,8 @@ Default Configuration (PS4):
 - Can be used on Linux and Mac
 - Adding autoupdate functionality when new github version is available
 - Adding GUI interface
+
+## Dependencies
+- mouse
+- pyautogui
+- pygame
