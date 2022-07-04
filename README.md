@@ -5,12 +5,12 @@ This program is to control the mouse pointer using a joystick. Targeted audience
 ## Configurations
 Default Configuration (PS4):
 - Left Stick:
-- Left -> Right   - Move mouse pointer in x-direction
-- Up   -> Down    - Move mouse pointer in y-direction
+    - Left -> Right   - Move mouse pointer in x-direction
+    - Up   -> Down    - Move mouse pointer in y-direction
 
 - Right Stick:
-- Left -> Right   - None
-- Up   -> Down    - Scroll
+    - Left -> Right   - None
+    - Up   -> Down    - Scroll
 
 - Left Trigger:
 - Out -> In       - None
@@ -19,22 +19,22 @@ Default Configuration (PS4):
 - Out -> In       - None
 
 - Buttons:
-- Cross Button    - Left click
-- Circle Button   - Right click
-- Square Button   - Ctrl+Tab (Next browser tab)
-- Triangle Button - Alt+Tab (Pressing this button brings up all the open apps. Use left and right D-Pad button to navigate. Finally press this button again to open that app) 
-- Share Button    - None
-- PS Button       - Stop this program
-- Options Button  - None
-- L. Stick In     - None
-- R. Stick In     - None
-- Left Bumper     - Decrease mouse sensitivity
-- Right Bumper    - Increase mouse sensitivity
-- D-pad Up        - Volume Up
-- D-pad Down      - Volume Down
-- D-pad Left      - Left key
-- D-pad Right     - Right key
-- Touch Pad Click - None
+    - Cross Button    - Left click
+    - Circle Button   - Right click
+    - Square Button   - Ctrl+Tab (Next browser tab)
+    - Triangle Button - Alt+Tab (Pressing this button brings up all the open apps. Use left and right D-Pad button to navigate. Finally press this button again to open that app) 
+    - Share Button    - None
+    - PS Button       - Stop this program
+    - Options Button  - None
+    - L. Stick In     - None
+    - R. Stick In     - None
+    - Left Bumper     - Decrease mouse sensitivity
+    - Right Bumper    - Increase mouse sensitivity
+    - D-pad Up        - Volume Up
+    - D-pad Down      - Volume Down
+    - D-pad Left      - Left key
+    - D-pad Right     - Right key
+    - Touch Pad Click - None
 
 ## Future Improvements
 - Adding On Screen Keyboard functionality when pressing the Touch Pad on the PS4
