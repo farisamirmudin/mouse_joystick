@@ -11,7 +11,7 @@ keylist = [ "\t", "\n", "\r", " ", "!", "\"", "#", "$", "%", "&", "'", "(", ")",
             "prtscr", "return", "right", "scrolllock", "select", "separator", "shift", "shiftleft", "shiftright", "sleep", "space", "stop", "subtract", "tab", "up", "volumedown", "volumemute", "volumeup", 
             "win", "winleft", "winright", "yen", "command", "option", "optionleft", "optionright" ]
 
-default = { 0: "left click", 1: "right click", 2: "", 3: "alt+tab", 4: "", 5: "exit", 6: "", 7: "", 8: "", 9: "sens down", 10: "sens up", 11: "volumeup", 12: "volumedown", 13: "left", 
+default = { 0: "left click", 1: "right click", 2: "ctrl+tab", 3: "alt+tab", 4: "", 5: "exit", 6: "", 7: "", 8: "", 9: "sens down", 10: "sens up", 11: "volumeup", 12: "volumedown", 13: "left", 
             14: "right", 15: "" }
 
 done = False
