@@ -10,7 +10,7 @@ Default Configuration (PS4):
 
 - Right Stick:
     - Left -> Right   - None
-    - Up   -> Down    - Scroll
+    - Up   -> Down    - Vertical scroll
 
 - Left Trigger:
 - Out -> In       - None

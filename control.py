@@ -3,6 +3,7 @@ import mouse
 import handler
 from misc import *
 import time
+import pyautogui as ag
 
 # Initializing joystick
 pygame.init()
@@ -18,31 +19,30 @@ while not done:
             print(cmd)
             if 'click' in cmd: # If command is to click
                 button, n = handler.click(cmd)
-                agclick(button=button, clicks=n)
+                ag.click(button=button, clicks=n)
             else: # If command is to press key
                 if cmd in keylist: # If it is a single command and available in the keylist
-                    agpress(cmd)
-                else: # Otherwise
-                    if '+' in cmd: # If it is a combination of commands
-                        if cmd == 'alt+tab': # If it is alt+tab
-                            if not falt:
-                                agkeydown('alt')
-                                time.sleep(0.1)
-                                agkeydown('tab')
-                                agkeyup('tab')
-                                falt = not falt
-                            else:
-                                agkeyup('alt')
-                                falt = not falt
+                    ag.press(cmd)
+                if '+' in cmd: # If it is a combination of commands
+                    if cmd == 'alt+tab': # alt+tab
+                        if not falt:
+                            ag.keyDown('alt')
+                            time.sleep(0.1)
+                            ag.keyDown('tab')
+                            ag.keyUp('tab')
+                            falt = not falt
                         else:
-                            keys = handler.hotkey(cmd) # Otherwise
-                            aghotkey(*keys)
-                    elif cmd == 'exit': # To exit the program
-                        done = True
-                    elif cmd == 'sens up': # Increase mouse sens
-                        multp_move += 10
-                    elif cmd == 'sens down': # Decrease mouse sens
-                        multp_move -= 10
+                            ag.keyUp('alt')
+                            falt = not falt
+                    else:
+                        keys = handler.hotkey(cmd) 
+                        ag.hotkey(*keys)
+                if cmd == 'exit': # To exit the program
+                    done = True
+                if cmd == 'sens up': # Increase mouse sens
+                    multp_move += 10
+                if cmd == 'sens down': # Decrease mouse sens
+                    multp_move -= 10
 
         elif event.type == pygame.JOYBUTTONUP: # Button is released
             pass
