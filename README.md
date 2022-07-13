@@ -13,10 +13,10 @@ Default Configuration (PS4):
     - Up   -> Down    - Vertical scroll
 
 - Left Trigger:
-- Out -> In       - None
+    - Out -> In       - None
 
 - Right Trigger:
-- Out -> In       - None
+    - Out -> In       - None
 
 - Buttons:
     - Cross Button    - Left click
