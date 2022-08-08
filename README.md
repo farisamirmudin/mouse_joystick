@@ -1,4 +1,4 @@
-# mouse-joystick
+# About
 Control mouse pointer using a joystick.
 
 ## Configurations
