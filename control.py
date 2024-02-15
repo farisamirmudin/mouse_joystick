@@ -1,59 +1,69 @@
 import pygame
-import mouse
-import handler
-from misc import *
-import time
+import macmouse as mouse
 import pyautogui as ag
 
-# Initializing joystick
+# pygame setup
 pygame.init()
+
+# joystick setup
 joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
 joystick = joysticks[0]
 
-ga = joystick.get_axis # Get axis value
+def main():
+    done = False
+    multiplier_move = 4
+    multiplier_scroll = 2
+    xOffset = 0
+    yOffset = 0
+    scroll_delta = 0
+    scaleMove = lambda x, k: x*k if abs(x)>0.1 else 0
+    get_axis = joystick.get_axis
+    volumeup = False
+    volumedown = False
 
-while not done:
-    for event in pygame.event.get(): # Button pressed or axis moved
-        if event.type == pygame.JOYBUTTONDOWN: # Button is pressed
-            cmd = default[event.button]
-            print(cmd)
-            if 'click' in cmd: # If command is to click
-                button, n = handler.click(cmd)
-                ag.click(button=button, clicks=n)
-            else: # If command is to press key
-                if cmd in keylist: # If it is a single command and available in the keylist
-                    ag.press(cmd)
-                if '+' in cmd: # If it is a combination of commands
-                    if cmd == 'alt+tab': # alt+tab
-                        if not falt:
-                            ag.keyDown('alt')
-                            time.sleep(0.1)
-                            ag.keyDown('tab')
-                            ag.keyUp('tab')
-                            falt = not falt
-                        else:
-                            ag.keyUp('alt')
-                            falt = not falt
-                    else:
-                        keys = handler.hotkey(cmd) 
-                        ag.hotkey(*keys)
-                if cmd == 'exit': # To exit the program
+    while not done:
+        if volumedown:
+            ag.press(u'KEYTYPE_SOUND_DOWN')
+            volumedown = False
+        if volumeup:
+            ag.press(u'KEYTYPE_SOUND_UP')
+            volumeup = False
+        for event in pygame.event.get():
+            if event.type == pygame.JOYBUTTONDOWN:
+                if event.button == 0:
+                    mouse.click(mouse.LEFT)
+                if event.button == 1:
+                    mouse.click(mouse.RIGHT)
+                if event.button == 2:
+                    ag.press('tab')
+                if event.button == 3:
                     done = True
-                if cmd == 'sens up': # Increase mouse sens
-                    multp_move += 10
-                if cmd == 'sens down': # Decrease mouse sens
-                    multp_move -= 10
+                if event.button == 9:
+                    multiplier_move /= 1.5
+                if event.button == 10:
+                    multiplier_move *= 1.5
+                if event.button == 12:
+                    ag.keyDown('command')
+                if event.button == 13:
+                    ag.hotkey('ctrl', 'tab')
+            if event.type == pygame.JOYBUTTONUP:
+                if event.button == 12:
+                    ag.keyUp('command')
+            if event.type == pygame.JOYAXISMOTION:
+                xOffset = scaleMove(get_axis(0), multiplier_move)
+                yOffset = scaleMove(get_axis(1), multiplier_move)
+                scroll_delta = scaleMove(get_axis(3), multiplier_scroll)
 
-        elif event.type == pygame.JOYBUTTONUP: # Button is released
-            pass
-                    
-        elif event.type == pygame.JOYAXISMOTION: # Axis is moved
-            x = multp(ga(0), multp_move)
-            y = multp(ga(1), multp_move)
-            scroll = multp(ga(3), multp_scroll)
-            # a4 = True if ga(4) > 0.9 else False
-            # a5 = True if ga(5) > 0.9 else False
+                # https://stackoverflow.com/questions/64641029/trying-to-mute-the-system-using-pyautogui-pressvolumemute-but-its-not-doing
 
-    mouse.move(x, y, absolute=False, duration=0.1) # Move mouse pointer
-    mouse.wheel(scroll) # Scroll
+                if get_axis(4) > 0.999:
+                    volumedown = True
+                if get_axis(5) > 0.999:
+                    volumeup = True
 
+                mouse.move(xOffset, yOffset, False)
+                mouse.wheel(scroll_delta)
+
+if __name__ == "__main__":
+    main()
+    pygame.quit()
